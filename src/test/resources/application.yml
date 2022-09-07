@@ -1,0 +1,4 @@
+authframework:
+  hskey: KTlgvPcXbnLoYl6b5Ma1oG294dGoZ+fyxBqJiBjQjVo=
+  audience: testaudience
+  token-ttl: 86400000
