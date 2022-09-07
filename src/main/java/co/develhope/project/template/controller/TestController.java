@@ -1,6 +1,5 @@
 package co.develhope.project.template.controller;
 
-import org.springframework.context.annotation.Profile;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -9,7 +8,6 @@ import co.develhope.project.template.security.RoleSecurity;
 import co.develhope.project.template.security.ZeroSecurity;
 
 @RestController
-@Profile("test-env")
 public class TestController {
 
 	@GetMapping("/default-deny")
