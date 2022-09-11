@@ -10,13 +10,17 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.method.HandlerMethod;
 
+import co.develhope.project.template.security.HierarchicalSecurity;
 import co.develhope.project.template.security.PublicEndpoint;
 import co.develhope.project.template.security.RoleSecurity;
+import co.develhope.project.template.security.RoleVisitor;
 import co.develhope.project.template.security.ZeroSecurity;
 import co.develhope.project.template.utils.Constants;
 
@@ -25,6 +29,9 @@ import co.develhope.project.template.utils.Constants;
 public class MethodSecurityFilter extends OncePerRequestFilter {
 
 	private static final Logger logger = LoggerFactory.getLogger(MethodSecurityFilter.class);
+
+	@Autowired(required = false)
+	private RoleVisitor roleVisitor;
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -53,6 +60,17 @@ public class MethodSecurityFilter extends OncePerRequestFilter {
 							}
 						}
 					}
+				}
+			} else if (method.hasMethodAnnotation(HierarchicalSecurity.class)) {
+				Assert.notNull(roleVisitor, "A RoleVisitor implementation must be defined a spring bean");
+				HierarchicalSecurity hierarchicalSecurity = method.getMethodAnnotation(HierarchicalSecurity.class);
+				List<String> userRoles = AuthenticationContext.get().getRoles();
+				logger.debug("Security Role: {}, User roles: {}", hierarchicalSecurity.bottomRole(), userRoles);
+				if (hierarchicalSecurity != null && roleVisitor
+						.isRoleHierarchicallyUpperOrEqualsTo(hierarchicalSecurity.bottomRole(), userRoles)) {
+					logger.info("Authorization granted for role {}", hierarchicalSecurity.bottomRole());
+					authorized = true;
+					filterChain.doFilter(request, response);
 				}
 			}
 		} catch (Exception e) {

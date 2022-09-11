@@ -44,10 +44,14 @@ public class AuthorizationFilter extends OncePerRequestFilter {
 				String[] tokens = authenticationHeader.split(" ");
 				if (tokens[0].equals("Bearer")) {
 					Jws<Claims> claims = jwtUtils.decodeJwt(tokens[1]);
-					Principal principal = new Principal(claims.getBody().getSubject(),
-							(List<String>) claims.getBody().get(Constants.CLAIM_USER_ROLES, List.class));
-					AuthenticationContext.set(principal);
-					filterChain.doFilter(request, response);
+					if (claims != null) {
+						Principal principal = new Principal(claims.getBody().getSubject(),
+								(List<String>) claims.getBody().get(Constants.CLAIM_USER_ROLES, List.class));
+						AuthenticationContext.set(principal);
+						filterChain.doFilter(request, response);
+					} else {
+						response.sendError(HttpStatus.FORBIDDEN.value());
+					}
 				}
 			} else {
 				response.sendError(HttpStatus.FORBIDDEN.value());
