@@ -34,7 +34,7 @@ import co.develhope.project.template.utils.Constants;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class RoleSecurityTestIT {
-	
+		
 	@MockBean
 	private UserDao userDao;
 	
@@ -60,9 +60,7 @@ public class RoleSecurityTestIT {
 		roleUser.setRoles(java.util.Arrays.asList("ROLE_PUBLISHER"));
 		roleUser.setUsername("pasquale");
 		when(userDao.getUserByUsername("roleUser")).thenReturn(roleUser);
-
 		when(passwordEncoder.matches(any(), any())).thenReturn(true);
-	
 	}
 	
 	

@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.develhope.project.template.filter.AuthenticationContext;
+import co.develhope.project.template.security.HierarchicalSecurity;
 import co.develhope.project.template.security.PublicEndpoint;
 import co.develhope.project.template.security.RoleSecurity;
 import co.develhope.project.template.security.ZeroSecurity;
@@ -34,4 +35,10 @@ public class TestController {
 		System.out.println("This endpoint can be reached only by authenticated users with ROLE_ADMIN or ROLE_PUBLISHER. Authenticated user is " + AuthenticationContext.get().getUsername());
 	}
 
+	@HierarchicalSecurity(bottomRole = "SUFFICIENT_ROLE")
+	@GetMapping("/hierarchi-evaluated-endpoint")
+	public void hierarchicalCheckEndpoint() {
+		System.out.println("This endpoint can be reached only by authenticated users with ROLE_ADMIN or ROLE_PUBLISHER. Authenticated user is " + AuthenticationContext.get().getUsername());
+	}	
+	
 }
