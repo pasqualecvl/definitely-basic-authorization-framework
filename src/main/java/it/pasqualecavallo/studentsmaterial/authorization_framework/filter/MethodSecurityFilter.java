@@ -35,7 +35,7 @@ public class MethodSecurityFilter extends OncePerRequestFilter {
 	
 	@Override
 	protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-		return (boolean) request.getAttribute(Constants.SKIP_AUTHORIZATION_FILTERCHAIN_ATTRIBUTE);
+		return Boolean.TRUE.equals(((Boolean)request.getAttribute(Constants.SKIP_AUTHORIZATION_FILTERCHAIN_ATTRIBUTE)));
 	}
 
 	@Override
