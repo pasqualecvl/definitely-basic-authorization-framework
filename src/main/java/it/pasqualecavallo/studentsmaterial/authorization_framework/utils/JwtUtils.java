@@ -20,13 +20,13 @@ import io.jsonwebtoken.security.Keys;
 @Component
 public class JwtUtils {
 
-	@Value("${authframework.hskey}")
+	@Value("${authframework.jwt.hskey}")
 	private String hsKey;
 
-	@Value("${authframework.audience}")
+	@Value("${authframework.jwt.audience}")
 	private String audience;
 
-	@Value("${authframework.token-ttl}")
+	@Value("${authframework.jwt.token-ttl}")
 	private long ttl;
 
 	private Key key;

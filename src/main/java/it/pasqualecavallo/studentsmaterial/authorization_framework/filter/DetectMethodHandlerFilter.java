@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.BeanFactoryUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,7 @@ import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.util.ServletRequestPathUtils;
 import org.springframework.web.util.WebUtils;
 
+import it.pasqualecavallo.studentsmaterial.authorization_framework.security.ExclusionPatterEvaluator;
 import it.pasqualecavallo.studentsmaterial.authorization_framework.utils.Constants;
 
 @Component
@@ -29,11 +31,25 @@ import it.pasqualecavallo.studentsmaterial.authorization_framework.utils.Constan
 public class DetectMethodHandlerFilter extends OncePerRequestFilter {
 
 	private static final Logger logger = LoggerFactory.getLogger(DetectMethodHandlerFilter.class);
-	
+
 	private HandlerMapping requestHandlerMapping;
 
+	@Autowired(required = false)
+	private ExclusionPatterEvaluator exclusionPatterEvaluator;
+
 	public DetectMethodHandlerFilter(ApplicationContext applicationContext) {
-		this.requestHandlerMapping = BeanFactoryUtils.beansOfTypeIncludingAncestors(applicationContext, HandlerMapping.class, true, false).get("requestMappingHandlerMapping");
+		this.requestHandlerMapping = BeanFactoryUtils
+				.beansOfTypeIncludingAncestors(applicationContext, HandlerMapping.class, true, false)
+				.get("requestMappingHandlerMapping");
+	}
+
+	@Override
+	protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+		if(exclusionPatterEvaluator == null) {
+			return false;
+		} else {
+			return exclusionPatterEvaluator.evaluateExclusion(request);
+		}
 	}
 
 	@Override
@@ -45,11 +61,11 @@ public class DetectMethodHandlerFilter extends OncePerRequestFilter {
 			RequestPath requestPath = RequestPath.parse(requestUri, request.getContextPath());
 			request.setAttribute(ServletRequestPathUtils.PATH_ATTRIBUTE, requestPath);
 			HandlerExecutionChain chain = requestHandlerMapping.getHandler(request);
-			if(chain != null && chain.getHandler() != null 
-					&& chain.getHandler() instanceof HandlerMethod) {
+			if (chain != null && chain.getHandler() != null && chain.getHandler() instanceof HandlerMethod) {
 				logger.debug("Found valid HandlerExecutionChain");
-				request.setAttribute(Constants.HANDLE_METHOD_FOR_AUTHORIZATION_ATTRIBUTE, (HandlerMethod)chain.getHandler());
-				filterChain.doFilter(request, response);			
+				request.setAttribute(Constants.HANDLE_METHOD_FOR_AUTHORIZATION_ATTRIBUTE,
+						(HandlerMethod) chain.getHandler());
+				filterChain.doFilter(request, response);
 			} else {
 				response.sendError(HttpStatus.NOT_FOUND.value());
 			}
@@ -58,6 +74,4 @@ public class DetectMethodHandlerFilter extends OncePerRequestFilter {
 		}
 	}
 
-	
-	
 }

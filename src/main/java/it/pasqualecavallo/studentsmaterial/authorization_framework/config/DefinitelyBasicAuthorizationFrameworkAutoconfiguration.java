@@ -18,7 +18,7 @@ import it.pasqualecavallo.studentsmaterial.authorization_framework.utils.BCryptP
 import it.pasqualecavallo.studentsmaterial.authorization_framework.utils.JwtUtils;
 
 @Configuration
-@ConditionalOnProperty(name = { "authframework.hskey", "authframework.audience", "authframework.token-ttl" })
+@ConditionalOnProperty(name = { "authframework.jwt.hskey", "authframework.jwt.audience", "authframework.jwt.token-ttl" })
 public class DefinitelyBasicAuthorizationFrameworkAutoconfiguration {
 	
 	private static final Logger logger = LoggerFactory.getLogger(DefinitelyBasicAuthorizationFrameworkAutoconfiguration.class);

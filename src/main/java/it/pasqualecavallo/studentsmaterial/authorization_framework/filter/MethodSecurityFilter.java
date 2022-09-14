@@ -32,6 +32,11 @@ public class MethodSecurityFilter extends OncePerRequestFilter {
 
 	@Autowired(required = false)
 	private RoleVisitor roleVisitor;
+	
+	@Override
+	protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+		return (boolean) request.getAttribute(Constants.SKIP_AUTHORIZATION_FILTERCHAIN_ATTRIBUTE);
+	}
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)

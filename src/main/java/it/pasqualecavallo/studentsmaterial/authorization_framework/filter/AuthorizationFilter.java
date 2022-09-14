@@ -28,6 +28,11 @@ public class AuthorizationFilter extends OncePerRequestFilter {
 
 	@Autowired
 	private JwtUtils jwtUtils;
+	
+	@Override
+	protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+		return (boolean) request.getAttribute(Constants.SKIP_AUTHORIZATION_FILTERCHAIN_ATTRIBUTE);
+	}
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -52,6 +57,8 @@ public class AuthorizationFilter extends OncePerRequestFilter {
 					} else {
 						response.sendError(HttpStatus.FORBIDDEN.value());
 					}
+				} else {
+					response.sendError(HttpStatus.FORBIDDEN.value());					
 				}
 			} else {
 				response.sendError(HttpStatus.FORBIDDEN.value());
