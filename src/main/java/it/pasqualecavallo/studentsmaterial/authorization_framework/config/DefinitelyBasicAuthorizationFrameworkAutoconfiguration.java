@@ -2,14 +2,12 @@ package it.pasqualecavallo.studentsmaterial.authorization_framework.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import it.pasqualecavallo.studentsmaterial.authorization_framework.dao.UserDao;
 import it.pasqualecavallo.studentsmaterial.authorization_framework.filter.AuthorizationFilter;
 import it.pasqualecavallo.studentsmaterial.authorization_framework.filter.DetectMethodHandlerFilter;
 import it.pasqualecavallo.studentsmaterial.authorization_framework.filter.LoginFilter;
@@ -21,7 +19,6 @@ import it.pasqualecavallo.studentsmaterial.authorization_framework.utils.JwtUtil
 
 @Configuration
 @ConditionalOnProperty(name = { "authframework.hskey", "authframework.audience", "authframework.token-ttl" })
-@ConditionalOnBean(value = UserDao.class)
 public class DefinitelyBasicAuthorizationFrameworkAutoconfiguration {
 	
 	private static final Logger logger = LoggerFactory.getLogger(DefinitelyBasicAuthorizationFrameworkAutoconfiguration.class);
