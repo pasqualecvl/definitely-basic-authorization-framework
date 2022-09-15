@@ -23,8 +23,10 @@ public class AuthenticationContext {
 	public static class Principal {
 		private String username;
 		private List<String> roles;
-
-		public Principal(String username, List<String> roles) {
+		private Long userId;
+		
+		
+		public Principal(String username, Long userId, List<String> roles) {
 			super();
 			this.username = username;
 			this.roles = roles;
@@ -44,6 +46,14 @@ public class AuthenticationContext {
 		
 		public void setRoles(List<String> roles) {
 			this.roles = roles;
+		}
+		
+		public Long getUserId() {
+			return userId;
+		}
+		
+		public void setUserId(Long userId) {
+			this.userId = userId;
 		}
 	}
 

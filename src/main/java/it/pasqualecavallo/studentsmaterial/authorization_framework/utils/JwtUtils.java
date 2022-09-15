@@ -36,13 +36,14 @@ public class JwtUtils {
 		this.key = Keys.hmacShaKeyFor(hsKey.getBytes());
 	}
 
-	public String getJws(String user, List<String> roles) {
+	public String getJws(String user, Long userId, List<String> roles) {
 		return Jwts.builder().setSubject(user).setAudience(audience)
 				.setExpiration(new Date(System.currentTimeMillis() + ttl)).setId(UUID.randomUUID().toString())
 				.setIssuedAt(new Date()).setNotBefore(new Date()).addClaims(new HashMap<>() {
 					private static final long serialVersionUID = 1L;
 						{
 							put(Constants.CLAIM_USER_ROLES, roles);
+							put(Constants.CLAIM_USER_ID, userId);
 						}
 				}).signWith(key).compact();
 	}

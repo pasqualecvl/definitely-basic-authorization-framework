@@ -48,7 +48,7 @@ public class LoginFilter extends OncePerRequestFilter {
 		UserDetails userDetails = userService.checkUserCredentials(params.get("username")[0],
 				params.get("password")[0]);
 		if (userDetails != null && passwordEncoder.matches(params.get("password")[0], userDetails.getPassword())) {
-			String jws = "Bearer " + jwtUtils.getJws(userDetails.getUsername(), userDetails.getRoles());
+			String jws = "Bearer " + jwtUtils.getJws(userDetails.getUsername(), userDetails.getUserId(), userDetails.getRoles());
 			if (jws != null) {
 				response.setHeader(Constants.X_AUTHENTICATION_HEADER, jws);
 			} else {

@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.PathMatcher;
-import org.springframework.web.util.WebUtils;
 
 import it.pasqualecavallo.studentsmaterial.authorization_framework.utils.Constants;
 
