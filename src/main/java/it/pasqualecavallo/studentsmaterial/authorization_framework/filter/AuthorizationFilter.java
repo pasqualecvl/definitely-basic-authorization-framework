@@ -50,7 +50,9 @@ public class AuthorizationFilter extends OncePerRequestFilter {
 				if (tokens[0].equals("Bearer")) {
 					Jws<Claims> claims = jwtUtils.decodeJwt(tokens[1]);
 					if (claims != null) {
-						Principal principal = new Principal(claims.getBody().getSubject(), (Long)claims.getBody().get(Constants.CLAIM_USER_ID), 
+						Principal principal = new Principal(
+								claims.getBody().getSubject(),
+								claims.getBody().get(Constants.CLAIM_USER_ID) != null ? ((Integer)claims.getBody().get(Constants.CLAIM_USER_ID)).longValue() : null, 
 								(List<String>) claims.getBody().get(Constants.CLAIM_USER_ROLES, List.class));
 						AuthenticationContext.set(principal);
 						filterChain.doFilter(request, response);

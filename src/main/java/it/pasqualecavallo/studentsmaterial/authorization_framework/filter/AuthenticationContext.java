@@ -30,6 +30,7 @@ public class AuthenticationContext {
 			super();
 			this.username = username;
 			this.roles = roles;
+			this.userId = userId;
 		}
 
 		public String getUsername() {
