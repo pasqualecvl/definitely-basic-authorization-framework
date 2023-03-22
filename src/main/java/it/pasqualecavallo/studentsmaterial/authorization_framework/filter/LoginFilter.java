@@ -3,11 +3,6 @@ package it.pasqualecavallo.studentsmaterial.authorization_framework.filter;
 import java.io.IOException;
 import java.util.Map;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
@@ -20,6 +15,10 @@ import it.pasqualecavallo.studentsmaterial.authorization_framework.service.UserS
 import it.pasqualecavallo.studentsmaterial.authorization_framework.utils.BCryptPasswordEncoder;
 import it.pasqualecavallo.studentsmaterial.authorization_framework.utils.Constants;
 import it.pasqualecavallo.studentsmaterial.authorization_framework.utils.JwtUtils;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Component
 @Order(0)

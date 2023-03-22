@@ -3,12 +3,11 @@ package it.pasqualecavallo.studentsmaterial.authorization_framework.security;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.PathMatcher;
 
 import it.pasqualecavallo.studentsmaterial.authorization_framework.utils.Constants;
+import jakarta.servlet.http.HttpServletRequest;
 
 public class ExclusionPatterEvaluator {
 
